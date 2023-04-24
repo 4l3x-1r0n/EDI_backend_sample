@@ -3,6 +3,7 @@ const edi =
     require("../../node_modules/rdpcrystal-edi-library/lib/RDPCrystalEDILibrary").RDPCrystalEDILibrary;
 const fs = require("fs");
 const enumMap = require("./enummap");
+const { parseEDI } = require("./parseEdiFile_837");
 
 function validateEdiFile(fileToTest, ruleFile) {
     let map = new enumMap();
@@ -34,7 +35,8 @@ function validateEdiFile(fileToTest, ruleFile) {
             Ordinal: error.SegmentOrdinal,
         });
     }
-    return result.length ? result : "No errors";
+
+    return result.length > 0 ? result : parseEDI(validator);
 }
 
 module.exports = {
