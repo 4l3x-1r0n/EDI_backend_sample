@@ -4,6 +4,12 @@ const { validateEdiFile } = require("../helpers/RDPCrystalEDI/validateEDIFile");
 const ediTest = (req, res) => {
     //procesar el archivo...,  ya evaluamos si viene el archivo con un middleware
     const file = req.files.ediFile;
+    if (!file) {
+        return res.status(400).json({
+            ok: false,
+            ms: "la parámetro key del archivo no es el requerido",
+        });
+    }
 
     // Path para guardar el archivo
     const path = process.cwd() + "/test.txt";
@@ -39,8 +45,14 @@ const ediTest = (req, res) => {
 
 const setRulesFile = (req, res) => {
     //procesar el archivo...,  ya evaluamos si viene el archivo con un middleware
-    const file = req.files.ediFile;
+    const file = req.files.rulesFile;
 
+    if (!file) {
+        return res.status(400).json({
+            ok: false,
+            ms: "la parámetro key del archivo no es el requerido",
+        });
+    }
     // Path para guardar el archivo
     const path = process.cwd() + "/ruleFile.rules";
 
