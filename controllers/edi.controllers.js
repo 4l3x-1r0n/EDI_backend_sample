@@ -2,14 +2,7 @@ const fs = require("fs");
 const { validateEdiFile } = require("../helpers/RDPCrystalEDI/validateEDIFile");
 
 const ediTest = (req, res) => {
-    if (!req.files || Object.keys(req.files).length === 0) {
-        return res.status(400).json({
-            ok: false,
-            msg: "No hay ningún archivo",
-        });
-    }
-
-    //procesar el archivo...
+    //procesar el archivo...,  ya evaluamos si viene el archivo con un middleware
     const file = req.files.ediFile;
 
     // Path para guardar el archivo
@@ -44,4 +37,27 @@ const ediTest = (req, res) => {
     });
 };
 
-module.exports = { ediTest };
+const setRulesFile = (req, res) => {
+    //procesar el archivo...,  ya evaluamos si viene el archivo con un middleware
+    const file = req.files.ediFile;
+
+    // Path para guardar el archivo
+    const path = process.cwd() + "/ruleFile.rules";
+
+    // Mover el archivo
+    file.mv(path, (error) => {
+        if (error) {
+            console.log(error);
+            return res.status(500).json({
+                ok: false,
+                msg: "Error al mover el archivo",
+            });
+        }
+
+        res.json({
+            ok: true,
+            msg: "Archivo Subido Correctamente",
+        });
+    });
+};
+module.exports = { ediTest, setRulesFile };
