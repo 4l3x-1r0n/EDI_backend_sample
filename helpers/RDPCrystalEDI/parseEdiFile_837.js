@@ -9,7 +9,6 @@ const parseEDI = (validator) => {
 
     //Get the EDI document loaded into memory
     let loadedEDIFile = validator.EDILightWeightDocument;
-
     // let loadedEDIFile = validator.EDIDataString;
 
     //Get EDI Data

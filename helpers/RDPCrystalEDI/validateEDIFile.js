@@ -31,7 +31,10 @@ function validateEdiFile(fileToTest, ruleFile) {
             Segment: error.Segment,
             Element: error.ElementOrdinal,
             Composite: error.CompositeElementOrdinal,
-            Description: error.Description,
+            Description:
+                error.Description === "Element 3 of SBR Required"
+                    ? "Missign Group Number"
+                    : error.Description,
             Ordinal: error.SegmentOrdinal,
         });
     }
@@ -42,3 +45,6 @@ function validateEdiFile(fileToTest, ruleFile) {
 module.exports = {
     validateEdiFile,
 };
+
+//TODO:  validation.passed
+//TODO:  raw data let lines = ediValidator.EDIFileLines;
