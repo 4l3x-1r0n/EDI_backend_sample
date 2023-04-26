@@ -3,7 +3,7 @@ const edi =
     require("../../node_modules/rdpcrystal-edi-library/lib/RDPCrystalEDILibrary").RDPCrystalEDILibrary;
 const fs = require("fs");
 const enumMap = require("./enummap");
-const { parseEDI } = require("./parseEdiFile_837");
+const { ediToJSON_837 } = require("./ediToJSON_837");
 
 function validateEdiFile(fileToTest, ruleFile) {
     let map = new enumMap();
@@ -16,6 +16,11 @@ function validateEdiFile(fileToTest, ruleFile) {
 
     // console.log("Validating EDI File");
     validator.validate();
+
+    // if (!validator.passed) {
+    //     console.log("?????");
+    //     return ediToJSON_837();
+    // }
 
     const result = [];
     for (let i = 0; i < validator.Errors.Count; i++) {
@@ -33,18 +38,17 @@ function validateEdiFile(fileToTest, ruleFile) {
             Composite: error.CompositeElementOrdinal,
             Description:
                 error.Description === "Element 3 of SBR Required"
-                    ? "Missign Group Number"
+                    ? "Missing Group Number"
                     : error.Description,
             Ordinal: error.SegmentOrdinal,
         });
     }
 
-    return result.length > 0 ? result : parseEDI(validator);
+    return result.length > 0 ? result : ediToJSON_837(fileToTest);
 }
 
 module.exports = {
     validateEdiFile,
 };
 
-//TODO:  validation.passed
 //TODO:  raw data let lines = ediValidator.EDIFileLines;

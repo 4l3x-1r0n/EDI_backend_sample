@@ -1,4 +1,6 @@
 const fs = require("fs");
+
+const { splitEdiFile } = require("../helpers/RDPCrystalEDI/splitEdiFile");
 const { validateEdiFile } = require("../helpers/RDPCrystalEDI/validateEDIFile");
 
 const ediTest = (req, res) => {
@@ -34,11 +36,17 @@ const ediTest = (req, res) => {
             .readFileSync(process.cwd() + "/test.txt")
             .toString();
 
-        const validationResult = validateEdiFile(fileToTest, ruleFile);
+        const splitedEdiFiles = splitEdiFile(fileToTest);
+
+        const result = splitedEdiFiles.map((edifile) =>
+            validateEdiFile(edifile, ruleFile)
+        );
+        // const result = validateEdiFile(fileToTest, ruleFile);
 
         res.json({
             ok: true,
-            validationResult,
+            documents: `----${splitedEdiFiles.length}----`,
+            result,
         });
     });
 };
