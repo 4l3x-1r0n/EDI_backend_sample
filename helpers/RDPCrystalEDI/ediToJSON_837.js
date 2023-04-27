@@ -34,7 +34,9 @@ const ediToJSON_837 = (document) => {
 
     claimHeader = {
         Member_Id:
-            _2010AA_NM101 === "IL" && _2010AA_NM108 === MI ? _2010AA_NM109 : "",
+            _2010AA_NM101 === "IL" && _2010AA_NM108 === "MI"
+                ? _2010AA_NM109
+                : "",
         Member_First_Name: _2010AA_NM101 === "IL" ? _2010AA_NM104 : "",
         Member_Last_Name: _2010AA_NM101 === "IL" ? _2010AA_NM103 : "",
         Plan_Id: _2010AA_NM101 === "PR" ? _2010AA_NM103 : "",
