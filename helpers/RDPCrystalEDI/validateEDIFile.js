@@ -44,9 +44,7 @@ function validateEdiFile(fileToTest, ruleFile) {
         });
     }
 
-    return result.length > 0
-        ? result
-        : ediToJSON_837(validator.EDILightWeightDocument);
+    return result.length > 0 ? result : ediToJSON_837(fileToTest);
 }
 
 module.exports = {
