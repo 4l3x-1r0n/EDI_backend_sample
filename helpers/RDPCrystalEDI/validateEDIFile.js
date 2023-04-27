@@ -26,25 +26,25 @@ function validateEdiFile(fileToTest, ruleFile) {
     for (let i = 0; i < validator.Errors.Count; i++) {
         let error = validator.Errors.getItem(i);
 
-        result.push({
-            Type: "Error",
-            Line: error.LineNumber,
-            Transaction: "",
-            SnipLevel: map.SnipLevelTypes[error.SnipLevel], //SnipTestLevel Enum
-            Message: map.MessageTypes[error.Message], //EDIValidationMessage Enum
-            Loop: error.Loop,
-            Segment: error.Segment,
-            Element: error.ElementOrdinal,
-            Composite: error.CompositeElementOrdinal,
-            Description:
-                error.Description === "Element 3 of SBR Required"
-                    ? "Missing Group Number"
-                    : error.Description,
-            Ordinal: error.SegmentOrdinal,
-        });
+        result.push(
+            // Type: "Error",
+            // Line: error.LineNumber,
+            // Transaction: "",
+            // SnipLevel: map.SnipLevelTypes[error.SnipLevel], //SnipTestLevel Enum
+            // Message: map.MessageTypes[error.Message], //EDIValidationMessage Enum
+            // Loop: error.Loop,
+            // Segment: error.Segment,
+            // Element: error.ElementOrdinal,
+            // Composite: error.CompositeElementOrdinal,
+            // Description:
+            error.Description === "Element 3 of SBR Required"
+                ? "Missing Group Number"
+                : error.Description
+            // Ordinal: error.SegmentOrdinal,
+        );
     }
 
-    return result.length > 0 ? result : ediToJSON_837(fileToTest);
+    return ediToJSON_837(fileToTest, result);
 }
 
 module.exports = {

@@ -1,6 +1,6 @@
 const edi =
     require("../../node_modules/rdpcrystal-edi-library/lib/RDPCrystalEDILibrary").RDPCrystalEDILibrary;
-const ediToJSON_837 = (dataToLoad) => {
+const ediToJSON_837 = (dataToLoad, ediErrors) => {
     let fileLoader = new edi.EDIFileLoader();
 
     //Load EDI data
@@ -82,6 +82,13 @@ const ediToJSON_837 = (dataToLoad) => {
             elementList[i + 1] = elements.getItem(i).DataValue;
         }
         return elementList;
+    }
+
+    if (ediErrors.length) {
+        (claimHeader.Rejected = "Y"),
+            ediErrors.forEach(
+                (error) => (claimHeader.Rejected_Reason += error)
+            );
     }
     return claimHeader;
 
