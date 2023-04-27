@@ -9,7 +9,7 @@ const ediTest = (req, res) => {
     if (!file) {
         return res.status(400).json({
             ok: false,
-            ms: "la parámetro key del archivo no es el requerido",
+            ms: "el parámetro key del archivo no es el requerido, debe ser 'ediFile'",
         });
     }
 
@@ -36,17 +36,19 @@ const ediTest = (req, res) => {
             .readFileSync(process.cwd() + "/test.txt")
             .toString();
 
-        const splitedEdiFiles = splitEdiFile(fileToTest);
+        //separamos los documentos(por si vie mas de uno)
+        const splittedEdiFiles = splitEdiFile(fileToTest);
 
-        const result = splitedEdiFiles.map((edifile) =>
-            validateEdiFile(edifile, ruleFile)
+        // validamos cada documento por separado
+        const validationResult = splittedEdiFiles.map((ediFile) =>
+            validateEdiFile(ediFile, ruleFile)
         );
-        // const result = validateEdiFile(fileToTest, ruleFile);
+        // const validationResult = validateEdiFile(splittedEdiFiles[0], ruleFile);
 
         res.json({
             ok: true,
-            documents: `----${splitedEdiFiles.length}----`,
-            result,
+            documents: `----${splittedEdiFiles.length}----`,
+            validationResult,
         });
     });
 };
@@ -58,7 +60,7 @@ const setRulesFile = (req, res) => {
     if (!file) {
         return res.status(400).json({
             ok: false,
-            ms: "la parámetro key del archivo no es el requerido",
+            ms: "el parámetro key del archivo no es el requerido, debe ser 'rulesFile'",
         });
     }
     // Path para guardar el archivo

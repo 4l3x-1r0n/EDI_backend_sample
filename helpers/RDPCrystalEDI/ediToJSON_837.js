@@ -1,14 +1,4 @@
-const ediToJSON_837 = (edifile) => {
-    // claimHeader = {
-    //     Member_Id: "si NM1 es IL y NM108 es MI aquí pongo lo que hay en NM109",
-    //     Member_First_Name: "si NM1 es IL aquí pongo lo que hay en NM104",
-    //     Member_Last_Name: "si NM1 es IL aquí pongo lo que hay en NM103",
-    //     Plan_Id:
-    //         "si NM1 es PR y NM108 es PI aquí pongo lo que hay en NM103 ???????? hay que validar mas cosas",
-    //     Billing_Provider_NPI:
-    //         "si NM1 es 85 aquí pongo lo que hay en NM109???? que pasa con Member_Id??? y los otros?",
-    // };
-
+const ediToJSON_837 = (document) => {
     // claimDetail = {
     //     Line_Seq: "lo que hay en LX01",
     //     DOS_From: "lo que hay en DTP03",
@@ -22,7 +12,38 @@ const ediToJSON_837 = (edifile) => {
     //     Unit: "SV104",
     // };
     // return [claimHeader, claimDetail];
-    return "paso la validación";
+
+    //get 2010AA loop
+    const _2010AA = document.MainSection.getLoop(
+        "INTERCHANGE HEADER/FUNCTIONAL GROUP/ST HEADER/2000A/2010AA"
+    );
+
+    //get 2010AA NM1 Segment
+    const _2010AA_NM1 = _2010AA.getSegment("NM1");
+
+    //get Items for 2010AA NM1 segment
+    const _2010AA_NM101 = _2010AA_NM1.getItem(0);
+    const _2010AA_NM102 = _2010AA_NM1.getItem(1);
+    const _2010AA_NM103 = _2010AA_NM1.getItem(2);
+    const _2010AA_NM104 = _2010AA_NM1.getItem(3);
+    const _2010AA_NM105 = _2010AA_NM1.getItem(4);
+    const _2010AA_NM106 = _2010AA_NM1.getItem(5);
+    const _2010AA_NM107 = _2010AA_NM1.getItem(6);
+    const _2010AA_NM108 = _2010AA_NM1.getItem(7);
+    const _2010AA_NM109 = _2010AA_NM1.getItem(8);
+
+    claimHeader = {
+        Member_Id:
+            _2010AA_NM101 === "IL" && _2010AA_NM108 === MI ? _2010AA_NM109 : "",
+        Member_First_Name: _2010AA_NM101 === "IL" ? _2010AA_NM104 : "",
+        Member_Last_Name: _2010AA_NM101 === "IL" ? _2010AA_NM103 : "",
+        Plan_Id: _2010AA_NM101 === "PR" ? _2010AA_NM103 : "",
+        Billing_Provider_NPI: _2010AA_NM101 === "85" ? _2010AA_NM109 : "",
+        Rejected: "N",
+        Rejected_Reason: "",
+    };
+
+    return claimHeader;
 };
 
 module.exports = {
