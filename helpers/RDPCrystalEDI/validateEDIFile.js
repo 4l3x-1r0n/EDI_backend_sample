@@ -3,7 +3,7 @@ const edi =
     require("../../node_modules/rdpcrystal-edi-library/lib/RDPCrystalEDILibrary").RDPCrystalEDILibrary;
 const fs = require("fs");
 const enumMap = require("./enummap");
-const { ediToJSON_837 } = require("./ediToJSON_837");
+const { ediToCustomJSON_837 } = require("./ediToCustomJSON_837");
 
 function validateEdiFile(fileToTest, ruleFile) {
     let map = new enumMap();
@@ -44,7 +44,7 @@ function validateEdiFile(fileToTest, ruleFile) {
         );
     }
 
-    return ediToJSON_837(fileToTest, result);
+    return ediToCustomJSON_837(validator.EDILightWeightDocument, result);
 }
 
 module.exports = {
