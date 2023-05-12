@@ -25,8 +25,21 @@ function validateEdiFile(fileToTest, ruleFile) {
     const result = [];
     for (let i = 0; i < validator.Errors.Count; i++) {
         let error = validator.Errors.getItem(i);
+        
+        let errorTratado = error.Description;
 
-        result.push(
+
+        if (errorTratado === "Element 3 of SBR Required") {
+            errorTratado = "Missing Group Number";
+        }
+        // error.Description === "Element 3 of SBR Required"
+        //         ? "Missing Group Number"
+        //         : error.Description;
+        if (errorTratado.indexOf("Loop: 2310C [SERVICE FACILITY LOCATION] Required but not found.") !== -1) {
+            errorTratado = 'Facility Provider NPI Not Found';
+        }   
+    
+        result.push(errorTratado
             // Type: "Error",
             // Line: error.LineNumber,
             // Transaction: "",
@@ -37,9 +50,9 @@ function validateEdiFile(fileToTest, ruleFile) {
             // Element: error.ElementOrdinal,
             // Composite: error.CompositeElementOrdinal,
             // Description:
-            error.Description === "Element 3 of SBR Required"
-                ? "Missing Group Number"
-                : error.Description
+            
+            
+                
             // Ordinal: error.SegmentOrdinal,
         );
     }
